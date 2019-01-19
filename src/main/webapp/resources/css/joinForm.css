@@ -1,0 +1,81 @@
+@charset "UTF-8";
+#joinTable {
+	width: 800px;
+	margin: 20px auto;
+}
+#joinTable tr th {
+	text-align: center;
+	width: 30%;
+	vertical-align: middle;
+	background-color: rgba(210,212,220,0.2);
+}
+#joinTable tr td {
+	text-align: left;
+	width: 70%;
+}
+#joinTable tr td input {
+	vertical-align: middle;
+	text-align: center;
+	margin-left: 20px;
+	height: 26px;
+	display: inline;
+}
+#m_id, #m_password, #m_pwCheck, #m_name, #m_pwCheck, #m_phone, #m_mail, #sample6_address, #sample6_address2 {
+	width: 300px;
+}
+#sample6_postcode, #sample6_address {
+	margin-bottom: 4px;
+}
+#sample6_postcode {
+	width: 160px;
+}
+#idConfirmBtn, #mailConfirmBtn {
+	padding-top: 4.4px;
+	height: 28px;
+	font-weight: bold;
+	margin-left: 10px;
+	font-size: 13px;
+}
+#mailConfirmBtn {
+	position: relative;
+	right: 4.6px;
+}
+#postBtn{
+	margin-top: -6px;
+	padding-top: 4.5px;
+	margin-left: 20px;
+	height: 28px;
+	font-weight: bold;
+	vertical-align: middle;
+	font-size: 13px;
+}
+#m_answer, #m_birth, #captcha, #m_question {
+	padding: 1px 5px;
+	vertical-align: middle;
+	text-align: center;
+	width: 200px;
+	height: 26px;
+	display: inline;
+	margin-bottom: 5px;
+}
+#captcha {
+	width: 120px;
+}
+
+#add_info li:last-child {
+	margin-top: 6px;
+}
+
+#captchaSub, #joinInsert, #joinCancel {
+	height: 30px;
+	padding-top: 5px;
+	font-weight: bold;
+	font-size: 13px;
+}
+#joinFormContainer {
+	margin-top: 24px;
+	width: 900px;
+}
+#btnsDiv {
+	text-align: center;
+}

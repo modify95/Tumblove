@@ -1,0 +1,246 @@
+@charset "UTF-8";
+
+* {
+   margin: 0;
+   padding: 0
+}
+
+.trading input, .trading textarea, .trading select, .trading button, .trading table {
+   font-family: '나눔고딕', NanumGothic, '맑은고딕', MalgunGothic, '돋움', Dotum,
+      Helvetica, sans-serif;
+   font-size: 12px
+}
+
+ol, ul {
+   list-style: none;
+}
+
+a {
+   text-decoration: none;
+}
+
+em {
+   display: inline-block;
+   margin-top: -3px;
+   line-height: 15px;
+   vertical-align: middle;
+   font-family: tahoma, geneva, sans-serif;
+   font-size: 14px;
+   font-style: normal;
+}
+
+#container {
+   width: 900px;
+   margin: 0 auto;
+}
+
+.order_sc {
+   padding-bottom: 80px;
+   color: #7d7d7d;
+}
+
+.order_sc .order_content {
+   position: relative;
+   border: 1px solid #e3e4e5;
+}
+
+.order_sc .product_area {
+   position: relative;
+   border: 1px solid #fff;
+   border-top: 0;
+   border-bottom: 0;
+}
+
+.order_sc .tb_products {
+   width: 100%;
+   border: 0;
+   text-align: center;
+}
+
+.order_sc .tb_products thead th {
+   padding: 24px 0 20px;
+   border: 0;
+   font-weight: normal;
+   border-bottom: 1px solid #eee;
+   color: #000;
+}
+
+.order_sc .tb_products tbody tr:first-child .product_info {
+   padding-top: 30px;
+}
+
+.order_sc .product_info {
+   position: relative;
+   min-height: 92px;
+   padding: 31px 7px 30px 189px;
+   text-align: left;
+}
+
+.order_sc .tb_products td {
+   border: 0;
+   word-wrap: break-word;
+   word-break: break-all;
+}
+
+.order_sc .product_info .product_thmb {
+   position: absolute;
+   top: 50%;
+   left: 50px;
+   margin-top: -46px;
+}
+
+.order_sc .product_info .product_thmb img {
+   vertical-align: top;
+}
+
+.order_sc .product_info .product_dsc {
+   display: inline-block;
+   max-width: 300px;
+   vertical-align: middle;
+   *zoom: 1;
+   *display: inline;
+}
+
+.order_sc .product_info .product_name {
+   font-size: 13px;
+   line-height: 18px;
+   color: #000;
+   cursor: pointer;
+}
+
+.order_sc .destination_wrap {
+   position: relative;
+   padding-bottom: 40px;
+   zoom: 1;
+   border-top: 1px solid lightgray;
+}
+
+.order_sc .destination_wrap .deliver_wrap {
+   float: left;
+   padding: 31px 50px 0 49px;
+   width: 480px;
+}
+
+.order_sc .deliver_option_wrap>strong {
+   float: left;
+   margin: 0 18px 0 -10px;
+   width: 100px;
+   color: #4b4b4b;
+}
+
+.order_sc .deliver_option_wrap .deliver_option {
+   float: left;
+   max-width: 546px;
+}
+
+.order_sc .deliver_option_wrap {
+   margin: 10px 0 0 10px;
+}
+
+.order_sc .deliver_option_wrap:after {
+   clear: both;
+   display: block;
+   content: '';
+}
+
+.order_sc .deliver_option_wrap+.addr_list {
+   padding-top: 7px;
+   margin-top: 15px;
+   border-top: 1px solid #e8e8e8;
+}
+
+.order_sc .deliver_wrap .addr_list li {
+   padding-top: 13px;
+   word-break: break-all;
+}
+
+.order_sc .addr_list>li>strong {
+   color: #4b4b4b;
+}
+
+.order_sc .deliver_wrap .new_delivery {
+   margin-top: 6px;
+}
+
+.order_sc .deliver_option_wrap:after {
+   clear: both;
+   display: block;
+   content: '';
+}
+
+.order_sc .deliver_option_wrap .deliver_option {
+   float: left;
+   max-width: 546px;
+}
+
+.order_sc .destination_wrap .userinfo_wrap {
+   float: right;
+   padding: 31px 50px 0;
+   border-right: 1px solid #fff;
+   width: 240px;
+}
+
+.order_sc .userinfo_wrap .user_info {
+   margin-top: 17px;
+   color: #000;
+}
+
+.order_sc .discount_wrap {
+   position: relative;
+   padding-bottom: 40px;
+   zoom: 1;
+   clear: both;
+   padding: 30px 0 0 50px;
+}
+
+.order_sc .discount_wrap .price_sum {
+   float: right;
+   margin-top: -100px;
+   padding: 40px 50px 0;
+   width: 240px;
+   padding: 40px 50px 0;
+}
+
+.order_sc .price_sum .sum {
+   margin-top: 20px;
+}
+
+.order_sc .price_sum .sum .totalPrice {
+   font-size: 30px;
+   color: #000;
+}
+
+.order_sc .payment_agree_wrap {
+   position: relative;
+   text-align: center;
+   padding: 26px 0 35px;
+   font-size: 0;
+   margin-top: 80px;
+}
+
+.order_sc .payment_agree_wrap .btnpayment {
+   width: 198px;
+   height: 56px;
+}
+
+.order_sc .payment_agree_wrap button {
+   margin: 0 6px;
+   border: 1px solid #8c98a5;
+   width: 175px;
+   height: 50px;
+   background-color: #99a4b0;
+   cursor: pointer;
+   color: white;
+}
+
+#btnUseAll {
+	height: 24px;
+	padding-top: 3.4px;
+}
+.order_sc .emailAgreement {
+   padding: 30px 0 0 50px;
+}
+
+b {
+	color: rgba(70,120,200,1);
+}

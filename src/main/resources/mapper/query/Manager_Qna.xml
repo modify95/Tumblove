@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tumbler.manager.qna.dao.ManagerQnaDAO">
+<select id="mQnaNoticeList" resultType="manager_qna">
+<![CDATA[select rownum, q.q_num, q.q_title, q.q_content, q.q_category, to_char(q.q_date,'yyyy-mm-dd') q_date, a.a_id from 
+(select q_num, m_num from qna where q_category = '공지' order by 1 desc) qa,
+(select a_id, a_num from admin) a, qna q 
+where q.q_num = qa.q_num and qa.m_num = a.a_num and q_category = '공지' and rownum <= 4 order by 2 desc]]>
+</select>
+<select id="mQnaList" parameterType="com.tumbler.manager.common.Criteria" resultType="manager_qna">
+<![CDATA[select q.q_num, q.m_num, q.q_title, q.q_content, q.q_category, q.q_count, q.q_password, to_char(q.q_date, 'yyyy-mm-dd') q_date, m.m_id 
+from (select rownum rn, q.q_num from qna q, 
+(select rownum rn, q_num from qna where q_num > 0 and not q_category ='공지' order by 2 desc) condition where
+condition.q_num = q.q_num and rownum <= #{pageNum} * #{amount} order by 2 desc) x, 
+qna q, member m where x.q_num = q.q_num and q.m_num = m.m_num and rn > (#{pageNum}-1) * #{amount} order by 1 desc]]>
+</select>
+<select id="mQnaTotal" resultType="int">
+select count(*) from qna where not q_category='공지'
+</select>
+<insert id="mQnaRegist" parameterType="manager_qna">
+insert into qna(q_num, m_num, q_title, q_content, q_category) 
+values (qna_seq.nextval, (select a_num from admin where a_id = #{a_id}), #{q_title}, #{q_content}, '공지')
+</insert>
+<select id="mQnaNoticeDetail" parameterType="int" resultType="manager_qna">
+select q.q_num, q.m_num, q.q_title, q.q_content, to_char(q.q_date,'yyyy-mm-dd') q_date, a.a_id from qna q, (select a_id, a_num from admin) a
+where q.m_num = a.a_num and q_category = '공지' and q_num = #{q_num}
+</select>
+<delete id="mQnaDelete" parameterType="int">
+delete from qna where q_num = #{q_num}
+</delete>
+<select id="mQnaDetail" parameterType="int" resultType="manager_qna">
+select q.q_num, q.m_num, q.q_title, q.q_content, to_char(q.q_date,'yyyy-mm-dd') q_date, m.m_id from qna q, member m
+where q.m_num = m.m_num and q_num = #{q_num}
+</select>
+<insert id="mQnaReply" parameterType="manager_qna">
+insert into qna_reply (qr_num, q_num, a_num, qr_content)
+values (qna_reply_seq.nextval, #{q_num}, (select a_num from admin where a_id = #{a_id}), #{qr_content})
+</insert>
+<select id="mQnaReplyList" parameterType="int" resultType="manager_qna">
+select r.qr_num, r.q_num, r.a_num, r.qr_content, to_char(r.qr_date,'yyyy-mm-dd hh:mm:ss') qr_date, (select a_id from admin where a_num = r.a_num) a_id
+from qna_reply r where q_num = #{q_num} order by 1 desc
+</select>
+<update id="mQnaReplyEdit" parameterType="manager_qna">
+update qna_reply set qr_content = #{qr_content}, qr_date = sysdate where qr_num = #{qr_num} 
+</update>
+<delete id="mQnaReplyDelete" parameterType="int">
+delete from qna_reply where qr_num = #{qr_num}
+</delete>
+<update id="mQnaCount" parameterType="int">
+update qna set q_count = q_count + 1 where q_num = #{q_num}
+</update>
+<select id="mQnaSearch" parameterType="com.tumbler.manager.common.Criteria" resultType="manager_qna">
+select q.q_num, q.q_category, q.q_title, q.q_content, q.q_count, to_char(q.q_date, 'yyyy-mm-dd') q_date, m.m_id from
+(select rownum rn, q.q_num from qna q, (select rownum rn, q_num from qna q, member m 
+where q.m_num = m.m_num and <include refid="mQnaSearchOption"/> and not q_category = '공지' order by 2 desc) searched_list
+<![CDATA[where searched_list.q_num = q.q_num and rownum <= #{pageNum} * #{amount} order by 2 desc) x, qna q, member m 
+where x.q_num = q.q_num and q.m_num = m.m_num and rn > (#{pageNum}-1) * #{amount} order by 1 desc]]>
+</select>
+<select id="mQnaSearchedTotal" parameterType="com.tumbler.manager.common.Criteria" resultType="int">
+select count(*) from qna q, member m where q.m_num = m.m_num and not q_category = '공지' and <include refid="mQnaSearchOption"/>
+</select>
+<select id="mQnaNoticeSearch" resultType="manager_qna">
+select q.q_num, q.m_num, q.q_title, q.q_content, to_char(q.q_date,'yyyy-mm-dd') q_date, a.a_id 
+from qna q, (select a_num, a_id from admin) a where q.m_num = a.a_num and q_category = '공지' order by 1 desc
+</select>
+<sql id="mQnaSearchOption">
+<choose>
+	<when test="search_option == '제목'">
+	q_title like '%'||#{search_keyword}||'%'
+	</when>
+	<when test="search_option == '내용'">
+	q_content like '%'||#{search_keyword}||'%'
+	</when>
+	<when test="search_option == '제목내용'">
+	q_title like '%'||#{search_keyword}||'%' or q_content like '%'||#{search_keyword}||'%'
+	</when>
+	<when test="search_option == '작성자'">
+	m.m_id like '%'||#{search_keyword}||'%'
+	</when>
+	<when test="search_option == '카테고리'">
+	q_category like '%'||#{search_keyword}||'%'
+	</when>
+	<when test="search_option == '작성일'">
+	to_char(q.q_date, 'yyyy-mm-dd') like '%'||#{search_keyword}||'%'
+	</when>
+</choose>
+</sql>
+</mapper>

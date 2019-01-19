@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tumbler.login.dao.MLoginDAO">
+   <select id="cQnaList" parameterType="com.tumbler.client.page.PageDTO" resultType="com.tumbler.qna.vo.QnaVO">
+   <![CDATA[
+   select q.q_num, q.q_title,to_char(q_date, 'yyyy-mm-dd')as q_date,q.q_category,q.q_password,m.m_id from
+   (select rownum rn, q.q_num from qna q
+   where rownum <= #{pageNum} * #{amount} order by 2 desc) x, member m, qna q 
+   where x.q_num = q.q_num and q.m_num = m.m_num and rn > (#{pageNum} -1) * #{amount} order by 1 desc]]>
+   </select>
+   
+   <select id="cQnaSearchPaging" parameterType="com.tumbler.client.page.PageDTO" resultType="com.tumbler.qna.vo.QnaVO">
+select q.q_num, q.q_title, to_char(q.q_date, 'yyyy-mm-dd')as q_date,q.q_category,q.q_password,m.m_id from
+   (select rownum rn, q.q_num from qna q,
+   (select rownum rn, q.q_num, m.m_id from qna q, member m where q.m_num = m.m_num and <include refid="cQnaSearchOption"/>  
+   order by 2 desc) condition
+   where <![CDATA[condition.q_num = q.q_num and rownum <= #{pageNum} * #{amount} order by 2 desc) x, member m, qna q 
+   where x.q_num = q.q_num and q.m_num = m.m_num and rn > (#{pageNum} -1) * #{amount} order by 1 desc]]>
+   </select>
+
+   <select id="cQnaTotal" resultType="int">
+      select count(*) from qna where q_num > 0
+   </select>
+   
+   <!-- <select id="qnaDetail" parameterType="com.tumbler.qna.vo.QnaVO" resultType="com.tumbler.qna.vo.QnaVO">
+      select q_num, q_title, q_content, to_char(q_date, 'yyyy-mm-dd')as q_date
+      from qna q
+      where q_num = #{q_num}
+   </select> -->
+   
+   <select id="cQnaDetail" parameterType="com.tumbler.qna.vo.QnaVO" resultType="com.tumbler.qna.vo.QnaVO">
+      select q_num, m_num, q_title, q_content, q_category, to_char(q_date,'yyyy-mm-dd') q_date,(select m_id from member where m_num = (select m_num from qna where q_num = #{q_num})) as m_id
+      from qna
+      where q_num = #{q_num}
+   </select>
+   
+   <insert id="cQnaInsert" parameterType="com.tumbler.qna.vo.QnaVO">
+         insert into qna(q_num, m_num, q_title, q_content, q_category, q_password) 
+         values 
+         ( qna_seq.nextval ,(select m_num from member where m_id = #{m_id}), #{q_title}, #{q_content}, #{q_category}, #{q_password})
+   </insert>
+   
+
+   
+   <select id="cQnaSearchTotal" parameterType="com.tumbler.client.page.PageDTO" resultType="int">
+   select 
+   count(*) from qna q, member m
+   where q.m_num = m.m_num and <include refid="cQnaSearchOption" />
+   </select>
+   
+   <sql id="cQnaSearchOption">
+      <choose>
+         <when test="search == '제목'">
+            q_title like '%' ||#{keyword}|| '%'
+         </when>
+         <when test="search == '내용'">
+            q_content like '%' ||#{keyword}||'%'
+         </when>
+         <when test="search == '작성자'">
+            m.m_id  like '%' ||#{keyword}||'%'
+         </when>
+      </choose>
+   </sql>
+   
+   <delete id="cQnaDelete" parameterType="com.tumbler.qna.vo.QnaVO">
+      delete from qna where q_num = #{q_num}     
+   </delete>
+   
+</mapper>

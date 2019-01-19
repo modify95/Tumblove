@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+"http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+	<definition name="intro2" template="/WEB-INF/views/template/manager/main.jsp">
+		<put-attribute name="title" value="Tumblove"/>
+		<put-attribute name="header" value="/WEB-INF/views/template/manager/header.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/template/manager/footer.jsp"/>
+	</definition>
+	<definition name="content2" template="/WEB-INF/views/template/manager/content.jsp">
+		<put-attribute name="title" value="Tumblove"/>
+		<put-attribute name="header" value="/WEB-INF/views/template/manager/header.jsp"/>
+		<put-attribute name="body" value=""/>
+		<put-attribute name="footer" value="/WEB-INF/views/template/manager/footer.jsp"/>
+	</definition>
+	<definition name="manager/product/*" extends="content2">
+		<put-attribute name="title" value="Tumblove"/>
+		<put-attribute name="body" value="/WEB-INF/views/manager/product/{1}.jsp"/>
+	</definition>
+	<definition name="manager/admin/*" extends="content2">
+		<put-attribute name="title" value="Tumblove"/>
+		<put-attribute name="body" value="/WEB-INF/views/manager/admin/{1}.jsp"/>
+	</definition>
+	<definition name="manager/board/*" extends="content2">
+		<put-attribute name="title" value="Tumblove"/>
+		<put-attribute name="body" value="/WEB-INF/views/manager/board/{1}.jsp"/>
+	</definition>
+	<!-- <definition name="manager/notice/noticeDetail" extends="content2">
+		<put-attribute name="title" value="Tumblove"/>
+		<put-attribute name="body" value="/WEB-INF/views/manager/notice/noticeDetail.jsp"/>
+	</definition> -->
+	<definition name="manager/member/memberList" extends="content2">
+		<put-attribute name="title" value="Tumblove"/>
+		<put-attribute name="body" value="/WEB-INF/views/manager/member/memberList.jsp"/>
+	</definition>
+</tiles-definitions>

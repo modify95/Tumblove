@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tumbler.manager.Faq.dao.ManagerFaqDAO">
+<insert id="mFaqInsert">
+insert into faq (f_num, f_title, f_content, f_category, a_num)
+values (faq_seq.nextval, #{f_title}, #{f_content}, #{f_category}, (select a_num from admin where a_id = #{a_id}))
+</insert>
+<select id="mFaqList" parameterType="com.tumbler.manager.common.Criteria" resultType="manager_faq">
+<![CDATA[select f.f_num, f.f_title, f.f_content, f.f_category, f.f_count, a.a_id, 
+to_char(f.f_date, 'yyyy-mm-dd') f_date from (select rownum rn, f.f_num from faq f, admin a 
+where f.a_num = a.a_num and rownum <= #{pageNum} * #{amount} order by 2 desc) x, faq f, admin a 
+where x.f_num = f.f_num and f.a_num = a.a_num and rn > (#{pageNum} - 1) * #{amount} order by 1 desc]]>
+</select>
+<select id="mFaqTotal" resultType="int">
+select count(*) from faq
+</select>
+<select id="mFaqDetail" parameterType="int" resultType="manager_faq">
+select f.f_num, f.f_title, f.f_content, f.f_category, a.a_id, to_char(f.f_date, 'yyyy-mm-dd') f_date from faq f, admin a
+where f.a_num = a.a_num and f_num = #{f_num}
+</select>
+<select id="mFaqDelete" parameterType="int">
+delete from faq where f_num = #{f_num}
+</select>
+<insert id="mFaqReply" parameterType="manager_faq">
+insert into faq_reply(fr_num, f_num, fr_content) values (faq_reply_seq.nextval, #{f_num}, #{fr_content})
+</insert>
+<select id="mFaqReplyList" parameterType="int" resultType="manager_faq">
+select fr_num, f_num, fr_content, to_char(fr_date, 'yyyy-mm-dd hh:mm:ss') fr_date from faq_reply where f_num = #{f_num} order by 1 desc
+</select>
+<update id="mFaqReplyEdit" parameterType="manager_faq">
+update faq_reply set fr_content = #{fr_content}, fr_date = sysdate where fr_num = #{fr_num}
+</update>
+<delete id="mFaqReplyDelete" parameterType="int">
+delete from faq_reply where fr_num = #{fr_num}
+</delete>
+<delete id="mFaqReplyDeleteAll" parameterType="int">
+delete from faq_reply where f_num = #{f_num}
+</delete>
+<update id="mFaqCount" parameterType="int">
+update faq set f_count = f_count + 1 where f_num = #{f_num}
+</update>
+<select id="mFaqSearch" parameterType="com.tumbler.manager.common.Criteria" resultType="manager_faq">
+select f.f_num, f.f_title, f.f_content, f.f_category, f.f_count, to_char(f.f_date, 'yyyy-mm-dd') f_date, a.a_id from
+(select rownum rn, f.f_num from faq f, admin a,
+(select rownum rn, f.f_num from faq f, admin a where f.a_num = a.a_num and <include refid="mFaqSearchOption"/> order by 2 desc) searched_list
+<![CDATA[where searched_list.f_num = f.f_num and f.a_num = a.a_num and rownum <= #{pageNum} * #{amount} order by 2 desc) x, faq f, admin a 
+where f.f_num = x.f_num and f.a_num = a.a_num and rn > (#{pageNum}-1) * #{amount} order by 1 desc]]>
+</select>
+<select id="mFaqSearchedTotal" parameterType="com.tumbler.manager.common.Criteria" resultType="int">
+select count(*) from faq f, admin a where f.a_num = a.a_num and<include refid="mFaqSearchOption"/>
+</select>
+<sql id="mFaqSearchOption">
+<choose>
+	<when test="search_option == '제목'">
+	f_title like '%'||#{search_keyword}||'%'
+	</when>
+	<when test="search_option == '내용'">
+	f_content like '%'||#{search_keyword}||'%'
+	</when>
+	<when test="search_option == '제목내용'">
+	f_title like '%'||#{search_keyword}||'%' or f_content like '%'||#{search_keyword}||'%'
+	</when>
+	<when test="search_option == '카테고리'">
+	f_category like '%'||#{search_keyword}||'%'
+	</when>
+	<when test="search_option == '작성일'">
+	to_char(f_date, 'yyyy-mm-dd') like '%'||#{search_keyword}||'%'
+	</when>
+</choose>
+</sql>
+</mapper>

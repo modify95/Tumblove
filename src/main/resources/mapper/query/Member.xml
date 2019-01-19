@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tumbler.member.dao.MemberDAO">
+	<insert id="memberInsert" parameterType="member">
+		<selectKey keyProperty="m_num" resultType="int"
+			order="BEFORE">
+			select member_seq.nextval from dual
+		</selectKey>
+		insert into member(
+		m_num,
+		m_id,
+		m_password,
+		m_name,
+		m_phone,
+		m_mail,
+		m_address,
+		m_question,
+		m_payment,
+		m_answer,
+		m_birth,
+		m_gender,
+		m_agreement
+		)
+		values(
+		#{m_num}
+		,#{m_id}
+		,#{m_password}
+		,#{m_name}
+		,#{m_phone}
+		,#{m_mail}
+		,#{m_address}
+		,#{m_question}
+		,#{m_payment}
+		,#{m_answer}
+		,#{m_birth}
+		,#{m_gender}
+		,#{m_agreement}
+		)
+	</insert>
+
+	<select id="userMailConfirm" resultType="member">
+		select *
+		from member
+		where
+		m_mail = #{m_mail}
+	</select>
+
+	<select id="userIdConfirm" resultType="member">
+		select *
+		from member
+		where
+		m_id = #{m_id}
+	</select>
+
+	<select id="loginSelect" parameterType="member"
+		resultType="member">
+		select * from member where m_id = #{m_id} and m_password =
+		#{m_password}
+	</select>
+
+	<update id="memberStUpdate" parameterType="String">
+		update member set
+		m_statement = '일반회원' where m_id = #{m_id}
+	</update>
+
+	<update id="memberPwUpdate" parameterType="member">
+		update member set
+		m_password = #{m_password} where m_id = #{m_id}
+	</update>
+
+	<update id="memberUpdate" parameterType="member">
+		update member set
+		m_password = #{m_password, jdbcType=VARCHAR},
+		m_phone = #{m_phone, jdbcType=VARCHAR},
+		m_address =
+		#{m_address, jdbcType=VARCHAR},
+		m_question = #{m_question, jdbcType=VARCHAR},
+		m_answer = #{m_answer, jdbcType=VARCHAR},
+		m_birth = #{m_birth, jdbcType=VARCHAR},
+		m_gender = #{m_gender, jdbcType=VARCHAR},
+		m_agreement =
+		#{m_agreement, jdbcType=NUMERIC}
+		where m_id = #{m_id, jdbcType=VARCHAR}
+	</update>
+
+	<update id="memberQuit" parameterType="String">
+		update member set
+		(m_statement, m_mileage) =
+		(select m_statement, m_mileage from member
+		where m_id = 'delete')
+		where m_id = #{m_id}
+	</update>
+
+	<select id="findId" parameterType="member" resultType="member">
+		select
+		m_id
+		from member
+		where
+		m_mail = #{m_mail}
+	</select>
+
+	<select id="findPw" parameterType="member" resultType="member">
+		select *
+		from member
+		where m_id = #{m_id}
+		and
+		m_mail = #{m_mail}
+	</select>
+	
+	<select id="getAddress" parameterType="member" resultType="member">
+	select m_address from member where m_id = #{m_id}
+	</select>
+	
+	<select id="selectMemberInfo" parameterType="com.tumbler.member.vo.MemberVO" resultType="com.tumbler.member.vo.MemberVO">
+		select *
+		from member
+		where m_id = #{m_id}
+	</select>
+</mapper>

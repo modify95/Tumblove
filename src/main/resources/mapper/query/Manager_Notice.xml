@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tumbler.manager.notice.dao.ManagerNoticeDAO">
+
+<select id="noticeList" parameterType="com.tumbler.manager.common.Criteria" resultType="manager_notice">
+<![CDATA[select n.n_num,n.n_title,n.n_content,n.n_count, to_char(n.n_date,'YYYY-MM-DD') as n_date, a.a_id
+from(select rownum rn, n_num from notice where rownum <= #{pageNum} * #{amount} order by 2 desc) x, notice n, admin a 
+where x.n_num = n.n_num and n.a_num = a.a_num and rn > (#{pageNum}-1) * #{amount} order by 1 desc]]>
+</select>
+
+<insert id="noticeInsert" parameterType="manager_notice">
+<selectKey keyProperty="n_num" resultType="int"
+			order="BEFORE">
+			select notice_seq.nextval from dual
+		</selectKey>
+
+insert into notice(
+	n_num,
+	a_num,
+	n_title,
+	n_content
+)
+values(
+#{n_num},
+  (select a_num from admin where a_id = #{a_id}),
+#{n_title},
+#{n_content}
+)
+</insert>
+
+<select id="noticeDetail" parameterType="int" resultType="manager_notice">
+select no.n_num,no.n_title,no.n_content,no.n_count ,to_char(no.n_date,'YYYY-MM-DD') as n_date , ad.a_id
+from notice no ,admin ad where no.n_num = #{n_num} and no.a_num = ad.a_num 
+
+</select>
+
+<delete id="noticeDelete" parameterType="manager_notice">
+delete from notice where n_num = #{n_num}
+</delete>
+
+<update id="noticeCnt" parameterType="int" >
+update notice set n_count = n_count + 1
+where n_num = #{n_num}
+</update>
+
+<select id="mNoticeTotal" parameterType="com.tumbler.manager.common.Criteria" resultType="int">
+	select count(*) from notice where n_num > 0
+</select>
+<select id="mNoticeSearch" parameterType="com.tumbler.manager.common.Criteria" resultType="manager_notice">
+select n.n_num, n.n_title, n.n_content, n.n_count, to_char(n.n_date, 'yyyy-mm-dd') n_date, a.a_id from
+(select rownum rn, n.n_num from notice n, (select rownum rn, n.n_num from notice n, admin a where n.a_num = a.a_num and 
+<choose>
+	<when test="search_option == '제목'">
+	n_title like '%'||#{search_keyword}||'%'
+	</when>
+	<when test="search_option == '내용'">
+	n_content like '%'||#{search_keyword}||'%'
+	</when>
+	<when test="search_option == '제목내용'">
+	(n_title like '%'||#{search_keyword}||'%' or n_content like '%'||#{search_keyword}||'%')
+	</when>
+	<when test="search_option == '작성일'">
+	to_char(n_date, 'yyyy-mm-dd') like '%'||#{search_keyword}||'%'
+	</when>
+</choose>
+order by 2 desc) searched_list 
+<![CDATA[where searched_list.n_num = n.n_num and rownum <= #{pageNum} * #{amount} order by 2 desc) x, notice n, admin a 
+where x.n_num = n.n_num and n.a_num = a.a_num and rn > (#{pageNum}-1) * #{amount} order by 1 desc]]>
+</select>
+<select id="mNoticeSearchCount" parameterType="com.tumbler.manager.common.Criteria" resultType="int">
+<![CDATA[select count(*) from notice where ]]>
+<choose>
+	<when test="search_option == '제목'">
+	n_title like '%'||#{search_keyword}||'%'
+	</when>
+	<when test="search_option == '내용'">
+	n_content like '%'||#{search_keyword}||'%'
+	</when>
+	<when test="search_option == '제목내용'">
+	(n_title like '%'||#{search_keyword}||'%' or n_content like '%'||#{search_keyword}||'%')
+	</when>
+	<when test="search_option == '작성일'">
+	to_char(n_date, 'yyyy-mm-dd') like '%'||#{search_keyword}||'%'
+	</when>
+</choose>
+</select>
+</mapper>

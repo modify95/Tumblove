@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tumbler.manager.member.dao.ManagerMemberDAO">
+<select id="memberList" resultType="manager_member" parameterType="com.tumbler.manager.common.Criteria">
+<![CDATA[select m.m_num, m.m_id, m.m_name, m.m_grade, m.m_statement from member m,
+(select rownum rn, m_num from member where rownum <= #{pageNum} * #{amount} order by 2 desc) x
+where x.m_num = m.m_num and rn > (#{pageNum}-1) * #{amount} order by 1 desc]]>
+</select>
+
+<select id="memberDetail" resultType="manager_member" parameterType="int">
+select m_num,m_id , m_name , m_phone, m_grade , m_mileage, m_payment, m_gender,
+m_birth, m_question, m_answer, m_agreement, m_statement,m_address,m_mail
+
+from member where m_num = #{m_num}
+
+</select>
+
+<select id="memberTotal" parameterType="com.tumbler.manager.common.Criteria" resultType="int">
+select count(*) from member where m_num > 0
+
+</select>
+
+<select id="memberSearchedTotal" parameterType="com.tumbler.manager.common.Criteria" resultType="int">
+select count(*) from member where m_num > 0 and
+<include refid="memberSearchOption"/>
+</select>
+
+
+
+<select id="memberSearch" resultType="manager_member">
+select m.m_num,m.m_id,m.m_name,m.m_grade,m.m_statement from 
+(select rownum rn, m.m_num from
+(select rownum rn, m.m_num from member m where <include refid="memberSearchOption"/> 
+order by 2 desc) search_list, member m 
+where <![CDATA[ search_list.m_num = m.m_num  and rownum <= #{pageNum} * #{amount} order by 2 desc) x, 
+member m where
+ rn > (#{pageNum}-1) * #{amount} and x.m_num = m.m_num order by 1 desc]]>
+   
+</select>
+
+<sql id="memberSearchOption">
+<choose>
+<when test="search_option == '아이디'" >
+m_id like '%'||#{search_keyword} ||'%'
+</when>
+<when test="search_option == '이름'" >
+m_name like '%'||#{search_keyword} || '%'
+</when>
+<when test="search_option == '회원등급'">
+m_grade like '%' || #{search_keyword} || '%' 
+</when>
+<when test="search_option == '전화번호'">
+m_phone like '%' || #{search_keyword} || '%'
+</when>
+<when test="search_option == '회원상태'">
+m_statement like '%' || #{search_keyword} || '%'
+</when>
+<when test="search_option == '이메일'">
+m_mail like '%' || #{search_keyword} || '%'
+</when>
+<when test="search_option == '주소'">
+m_address like '%' || #{search_keyword} || '%'
+</when>
+<when test="search_option == '마케팅동의'">
+<if test="search_keyword == '동의'">
+m_agreement = 1
+</if>
+<if test="search_keyword == '비동의'">
+m_agreement = 0
+</if>
+</when>
+<when test="search_option == '가입일'">
+to_char(m_date ,'YYYY-MM-DD') like '%' || #{search_keyword} || '%'
+</when>
+</choose>	
+</sql>
+
+</mapper>

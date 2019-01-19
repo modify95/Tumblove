@@ -1,0 +1,249 @@
+@charset "UTF-8";
+.container {
+	width: 1100px;
+	margin: 0px auto;
+}
+.product {
+	width: 100%;
+	border: 1px solid transparent;
+	padding-left: 20px;
+	padding-right: 28px;
+}
+
+#btndiv {
+	margin: 0px auto;
+	width: 100%;
+	text-align: center;
+	height: 50px;
+	clear: both;
+	padding-top: 30px;
+}
+
+#image_div {
+	width: 400px;
+	height: 400px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+#product_ul {
+	width: 400px;
+	height: 400px;
+	margin: 60px auto;	
+}
+
+#product_ul li:first-child {
+	font-size: 14px;
+}
+
+#product_ul span {
+	font-weight: bold;
+}
+
+#product_ul li {
+	color: white;
+	margin-bottom: 10px;
+}
+
+#amount_div {
+	width: 120px;
+	margin: 0 auto;
+}
+
+#name_span {
+	font-size: 15px;
+	color: rgba(80,120,200,1);
+}
+
+#total_div{
+	width: 200px;
+	margin: 0 auto;
+}
+
+#productButtons {
+	margin-top: -10px;
+	padding: 0;
+	text-align: center;
+}
+#btndiv button {
+	width: 200px;
+}
+
+#p_name {
+	font-size: 16px;
+}
+#p_data {
+	width: 100%;
+}
+
+#product_left {
+	background-color: rgba(0,0,0,0.8);
+	width: 500px;
+	height: 600px;
+	float: left;
+	border-radius: 5px;
+}
+
+#product_left h4 {
+	margin-left: 50px;
+	margin-top: 32px;
+	font-size: 18px;
+	margin-bottom: 18px;
+	font-weight: bold;
+	color: white;
+}
+
+h4 {
+	margin-top: 32px;
+	font-size: 18px;
+	margin-bottom: 18px;
+	font-weight: bold;
+	color: black;
+}
+
+#product_right {
+	background-color: rgba(0,0,0,0.8);
+	width: 500px;
+	height: 600px;
+	float: right;
+	border-radius: 5px;
+}
+
+.td1  {
+	width: 150px;
+	height: 30px;
+}
+.td2{
+	width: 350px;
+	height: 30px;
+}
+.t3{
+	width: 200px;
+	height: 30px;
+}
+.t4{
+	width: 350px;
+	height: 30px;
+}
+.but1, .but2, .but3{
+	background-color: white;
+	height: 40px;
+	width: 300px;
+	border-radius: 12px;
+	position: relative;
+}
+.but3_3, .but2_2, .but1_1{
+	background-color: white;
+	height: 40px;
+	width: 300px;
+	border-radius: 12px;
+	position: relative;
+}
+table{
+	text-align: center;
+}
+table tr td:first-child, table tr td:first-child + td + td {
+	font-weight: bold;
+}
+#product_information_table {
+	width: 100%;
+}
+#product_information_table tr td, #refund_information_table tr td{
+	height: 50px;
+}
+#upButton{
+	background-color: white;
+}
+#downButton{
+	background-color: white;
+} 
+
+#amount{
+	width: 30px;
+}
+#total{
+	width: 70px;
+}
+
+.white_content {
+/* 	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0; */
+	background: rgba(0,0,0,0.8);
+	opacity: 0;
+	-webkit-transition: opacity 400ms ease-in;
+	-moz-transition: opacity 400ms ease-in;
+	transition: opacity 400ms ease-in;
+}
+
+.white_content:target {
+	opacity: 1;
+}
+
+.white_content div {
+	margin: 0px auto;
+	margin-top: 15%;
+	top: 25%;
+	left: 25%;
+	width: 20%;
+	height: 20%;
+	border: 5px solid black;
+	background-color: white;
+	overflow: auto;
+	text-align: center;
+}
+
+#MOVE_TOP_BTN{
+	position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1;
+    width: 42px;
+    height: 42px;
+    background-color: #fff;
+    border: 1px solid #dbdddf;
+}
+
+input[type="button"], #productButtons button, button {
+	font-weight: bold;
+}
+#downButton, #amount, #upButton {
+	color: black;
+	text-align: center;
+}
+.buttons {
+	text-align: center;
+}
+button:focus {
+	outline: none;
+}
+
+#review_div {
+	width: 100%;
+	min-height: 1000px;
+	margin: 20px auto;
+	border: 1px solid silver;
+	padding: 0;
+	padding-top: 12px;
+	overflow: auto;
+	border-radius: 5px;
+}
+
+#review_p {
+	width: 50px;
+	margin: 10px auto;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.item {
+	height: 500px;
+	width: 80%;
+	margin: 5px auto;
+	text-align: center;
+}
+#product_ul li a {
+	color: gray;
+}

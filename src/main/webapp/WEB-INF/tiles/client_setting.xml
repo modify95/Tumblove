@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+"http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+	<definition name="intro"
+		template="/WEB-INF/views/template/client/main.jsp">
+		<put-attribute name="title" value="Tumblove" />
+		<put-attribute name="header"
+			value="/WEB-INF/views/template/client/header.jsp" />
+		<put-attribute name="footer"
+			value="/WEB-INF/views/template/client/footer.jsp" />
+	</definition>
+	<definition name="content"
+		template="/WEB-INF/views/template/client/content.jsp">
+		<put-attribute name="title" value="Tumblove" />
+		<put-attribute name="header"
+			value="/WEB-INF/views/template/client/header.jsp" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer"
+			value="/WEB-INF/views/template/client/footer.jsp" />
+	</definition>
+	<definition name="product/*" extends="content">
+		<put-attribute name="title" value="Tumblove" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/product/{1}.jsp" />
+	</definition>
+	<!-- <definition name="member/*" extends="content"> <put-attribute name="title" 
+		value="Tumblove"/> <put-attribute name="body" value="/WEB-INF/views/member/{1}.jsp"/> 
+		</definition> -->
+	<definition name="trading/*" extends="content">
+		<put-attribute name="title" value="Tumblove" />
+		<put-attribute name="body" value="/WEB-INF/views/trading/{1}.jsp" />
+	</definition>
+	<definition name="cart/*" extends="content">
+		<put-attribute name="title" value="Tumblove" />
+		<put-attribute name="body" value="/WEB-INF/views/cart/{1}.jsp" />
+	</definition>
+	<definition name="member/joinAgree" extends="content">
+		<put-attribute name="title" value="Tumblove" />
+		<put-attribute name="body" value="/WEB-INF/views/member/joinAgree.jsp" />
+	</definition>
+	<definition name="member/joinForm" extends="content">
+		<put-attribute name="title" value="Tumblove" />
+		<put-attribute name="body" value="/WEB-INF/views/member/joinForm.jsp" />
+	</definition>
+	<definition name="member/findId" extends="content">
+		<put-attribute name="title" value="Tumblove" />
+		<put-attribute name="body" value="/WEB-INF/views/member/findId.jsp" />
+	</definition>
+	<definition name="member/findPw" extends="content">
+		<put-attribute name="title" value="Tumblove" />
+		<put-attribute name="body" value="/WEB-INF/views/member/findPw.jsp" />
+	</definition>
+	<definition name="member/myPage" extends="content">
+		<put-attribute name="title" value="Tumblove" />
+		<put-attribute name="body" value="/WEB-INF/views/member/myPage.jsp" />
+	</definition>
+	<definition name="/member/memberUD" extends="content">
+		<put-attribute name="title" value="Tumblove" />
+		<put-attribute name="body" value="/WEB-INF/views/member/memberUD.jsp" />
+	</definition>
+	<definition name="/member/memberQT" extends="content">
+		<put-attribute name="title" value="Tumblove" />
+		<put-attribute name="body" value="/WEB-INF/views/member/memberQT.jsp" />
+	</definition>
+    <definition name="faq/*" extends="content">
+       	<put-attribute name="title" value="Tumblove"/>
+       	<put-attribute name="body" value="/WEB-INF/views/faq/{1}.jsp"/>
+    </definition>
+	<definition name="notice/*" extends="content">
+		<put-attribute name="title" value="Tumblove"/>
+		<put-attribute name="body" value="/WEB-INF/views/notice/{1}.jsp"/>
+	</definition>
+	<definition name="qna/*" extends="content">
+		<put-attribute name="title" value="Tumblove"/>
+		<put-attribute name="body" value="/WEB-INF/views/qna/{1}.jsp"/>
+	</definition>
+</tiles-definitions>

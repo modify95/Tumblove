@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tumbler.manager.review.dao.ManagerReviewDAO">
+<insert id="mReviewNoticeInsert" parameterType="manager_review">
+insert into review(r_num, m_num, t_num, p_num, r_title, r_content, r_writer, r_score)
+values (review_seq.nextval, -1, -1, -1, #{r_title}, #{r_content}, #{a_id}, 0)
+</insert>
+<select id="mReviewNoticeList" resultType="manager_review">
+<![CDATA[select r.r_num, r.r_title, r.r_content, r.r_writer, r.r_count, to_char(r.r_date,'yyyy-mm-dd') r_date from 
+(select rownum rn, r_num from review order by 2 desc)x, review r where x.r_num = r.r_num and rn <= 5 and r.t_num = -1 order by 1 desc]]>
+</select>
+<select id="mReviewTotal" resultType="int">
+<![CDATA[select count(*) from review where not m_num = -1 and r_num > 0]]>
+</select>
+<select id="mReviewNoticeDetail" parameterType="int" resultType="manager_review">
+select r_num, r_title, r_content, r_writer, to_char(r_date,'yyyy-mm-dd') r_date from review where r_num = #{r_num}
+</select>
+<delete id="mReviewNoticeDelete" parameterType="int">
+delete from review where r_num = #{r_num}
+</delete>
+<insert id="mReviewReply" parameterType="manager_review">
+insert into review_reply (rr_num, r_num, rr_content, rr_writer) 
+values (review_reply_seq.nextval, #{r_num}, #{rr_content}, #{a_id})
+</insert>
+<insert id="mReviewInsert" parameterType="manager_review">
+insert into review (r_num, m_num, t_num, p_num, r_title, r_content, r_writer, r_image)
+values (review_seq.nextval, #{m_num}, #{t_num}, #{p_num}, #{r_title}, #{r_content},
+(select m_id from member where m_num = #{m_num}), #{r_image})
+</insert>
+<select id="mReviewList" parameterType="com.tumbler.manager.common.Criteria" resultType="manager_review">
+<![CDATA[select r.r_num, r.m_num, r.t_num, r.p_num, r.r_title, r.r_content, r.r_writer, r.r_image, r.r_score, r.r_count, to_char(r.r_date,'yyyy-mm-dd') r_date,
+m.m_num, m.m_id, p.p_num, p.p_name, t.t_num from review r, member m, product p, trading t,
+(select rownum rn, r.r_num from review r, (select rownum rn, r_num from review where not t_num = -1 order by 2 desc) condition
+where condition.r_num = r.r_num and rownum <= #{pageNum} * #{amount} order by 2 desc) x
+where x.r_num = r.r_num and r.m_num = m.m_num and r.p_num = p.p_num and r.t_num = t.t_num and rn > (#{pageNum}-1) * #{amount} order by 1 desc]]>
+</select>
+<select id="mReviewDetail" parameterType="int" resultType="manager_review">
+select r.r_num, r.m_num, r.t_num, r.p_num, r.r_title, r.r_content, r.r_writer, r.r_image, r.r_score, r.r_count, to_char(r.r_date,'yyyy-mm-dd') r_date,
+m.m_num, m.m_id, p.p_num, p.p_name, t.t_num from review r, member m, product p, trading t 
+where r.m_num = m.m_num and r.p_num = p.p_num and r.t_num = t.t_num and not r.t_num = -1 and r_num = #{r_num}
+</select>
+<select id="mReviewCount" parameterType="int">
+update review set r_count = r_count + 1 where r_num = #{r_num}
+</select>
+<select id="mReviewReplyList" resultType="manager_review">
+select rr_num, r_num, rr_writer, rr_content, to_char(rr_date, 'yyyy-mm-dd hh:mm:ss') rr_date from review_reply order by 1 desc
+</select>
+<update id="mReviewReplyEdit" parameterType="manager_review">
+update review_reply set rr_content = #{rr_content}, rr_date = sysdate where rr_num = #{rr_num}
+</update>
+<delete id="mReviewReplyDelete" parameterType="int">
+delete from review_reply where rr_num = #{rr_num}
+</delete>
+<select id="mReviewSearch" parameterType="com.tumbler.manager.common.Criteria" resultType="manager_review">
+<![CDATA[select r.r_num, r.r_title, r.r_content, r.r_writer, r.r_count, to_char(r.r_date, 'yyyy-mm-dd') r_date, p.p_name from
+(select rownum rn, r.r_num from review r, product p,
+(select rownum rn, r.r_num from review r, product p where r.p_num = p.p_num and t_num > 0 and]]><include refid="mReviewSearchOption"/>
+order by 2 desc) searched_list
+<![CDATA[where searched_list.r_num = r.r_num and r.p_num = p.p_num and rownum <= #{pageNum} * #{amount} order by 2 desc) x, review r, product p 
+where x.r_num = r.r_num and r.p_num = p.p_num and rn > (#{pageNum}-1) * #{amount} order by 1 desc]]>
+</select>
+<select id="mReviewSearchedTotal" parameterType="com.tumbler.manager.common.Criteria" resultType="int">
+<![CDATA[select count(*) from review r, product p where r.p_num = p.p_num and t_num > 0 and]]><include refid="mReviewSearchOption"/>
+</select>
+<select id="mReviewNoticeSearch" resultType="manager_review">
+select r_num, r_title, r_content, r_writer, r_count, to_char(r_date,'yyyy-mm-dd') r_date from review where t_num = -1 order by 1 desc
+</select>
+<sql id="mReviewSearchOption">
+<choose>
+	<when test="search_option == '제목'">
+	r_title like '%'||#{search_keyword}||'%'
+	</when>
+	<when test="search_option == '내용'">
+	r_content like '%'||#{search_keyword}||'%'
+	</when>
+	<when test="search_option == '제목내용'">
+	r_title like '%'||#{search_keyword}||'%' or r_content like '%'||#{search_keyword}||'%'
+	</when>
+	<when test="search_option == '작성자'">
+	r_writer like '%'||#{search_keyword}||'%'
+	</when>
+	<when test="search_option == '상품명'">
+	p.p_name like '%'||#{search_keyword}||'%'
+	</when>
+	<when test="search_option == '작성일'">
+	to_char(p.p_date, 'yyyy-mm-dd') like '%'||#{search_keyword}||'%'
+	</when>
+</choose>
+</sql>
+</mapper>

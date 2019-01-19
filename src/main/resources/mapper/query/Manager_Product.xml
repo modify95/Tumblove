@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tumbler.manager.product.dao.ManagerProductDAO">
+<select id="managerProductList" parameterType="com.tumbler.common.page.Criteria" resultType="manager_product">
+<![CDATA[select p.p_num,p.i_num,p.p_name,p.p_material,p.p_category,p.p_sub_category,p.p_price,p.p_stock,
+p.p_temperature,p.p_stock,p.p_sales_volume,p.p_capacity,p.p_country,p.p_color,p.p_grade,p.p_state,p.p_date,
+i.image1,i.image2,i.image3,i.image4,i.image5 
+from (select rownum rn, p.p_num from product p, (select rownum rn, p_num from product  where p_num > 0 order by 2 desc) condition
+where condition.p_num = p.p_num and rownum <= #{pageNum} * #{amount} order by 2 desc) x, product p,product_image i 
+where x.p_num = p.p_num and p.i_num = i.i_num and rn > (#{pageNum} - 1) * #{amount} order by 1 desc]]>
+</select>
+<select id="mGetTotalCount" parameterType="com.tumbler.common.page.Criteria" resultType="int">
+<![CDATA[select count(*) from product where p_num > 0]]>
+</select>
+<select id="mSearchProductList" parameterType="com.tumbler.common.page.Criteria" resultType="manager_product">
+select p.p_num,p.i_num,p.p_name,p.p_material,p.p_category,p.p_sub_category,p.p_price,p.p_stock,
+p.p_temperature,p.p_stock,p.p_sales_volume,p.p_capacity,p.p_country,p.p_color,p.p_grade,p.p_state,p.p_date,
+i.image1,i.image2,i.image3,i.image4,i.image5 
+from(select rownum rn, p.p_num from product p, (select rownum rn, p_num from product where p_category = #{p_category} and
+<include refid="productSearchOption2"/> 
+<![CDATA[and p_num > 0]]>and p_name like '%'||#{keyword}||'%' order by 2 desc) searched_list
+<![CDATA[where searched_list.p_num = p.p_num and rownum <= #{pageNum} * #{amount} order by 2 desc) x, product p, product_image i 
+where x.p_num = p.p_num and p.i_num = i.i_num and rn > (#{pageNum} - 1) * #{amount} order by 1 desc]]>
+</select>
+<sql id="productSearchOption2">
+<choose>
+	<when test="p_sub_category == '일반'">
+	p_sub_category = '일반' and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '손잡이'">
+	p_sub_category = '손잡이' and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '빨대'">
+	p_sub_category = '빨대' and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '물병'">
+	p_sub_category = '물병' and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '보온'">
+	p_sub_category = '보온' and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '일반손잡이'">
+	(p_sub_category = '일반' or p_sub_category = '물병') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '일반빨대'">
+	(p_sub_category = '일반' or p_sub_category = '빨대') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '일반물병'">
+	(p_sub_category = '일반' or p_sub_category = '물병') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '일반보온'">
+	(p_sub_category = '일반' or p_sub_category = '보온') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '손잡이빨대'">
+	(p_sub_category = '손잡이' or p_sub_category = '빨대') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '손잡이물병'">
+	(p_sub_category = '손잡이' or p_sub_category = '물병') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '손잡이보온'">
+	(p_sub_category = '손잡이' or p_sub_category = '보온') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '빨대물병'">
+	(p_sub_category = '빨때' or p_sub_category = '물병') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '빨대보온'">
+	(p_sub_category = '빨대' or p_sub_category = '보온') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '물병보온'">
+	(p_sub_category = '물병' or p_sub_category = '보온') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '일반손잡이빨대'">
+	(p_sub_category = '물병' or p_sub_category = '손잡이' or p_sub_category = '빨대') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '일반손잡이물병'">
+	(p_sub_category = '물병' or p_sub_category = '손잡이' or p_sub_category = '물병') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '일반손잡이보온'">
+	(p_sub_category = '물병' or p_sub_category = '손잡이' or p_sub_category = '보온') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '손잡이빨대물병'">
+	(p_sub_category = '손잡이' or p_sub_category = '빨대' or p_sub_category = '물병') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '손잡이빨대보온'">
+	(p_sub_category = '손잡이' or p_sub_category = '빨대' or p_sub_category = '보온') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '빨대물병보온'">
+	(p_sub_category = '빨대' or p_sub_category = '물병' or p_sub_category = '보온') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '일반손잡이빨대물병'">
+	(p_sub_category = '일반' or p_sub_category = '손잡이' or p_sub_category = '빨대' or p_sub_category = '물병') 
+	and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '일반손잡이빨대보온'">
+	(p_sub_category = '일반' or p_sub_category = '손잡이' or p_sub_category = '빨대' or p_sub_category = '보온') 
+	and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '손잡이빨대물병보온'">
+	(p_sub_category = '물병' or p_sub_category = '손잡이' or p_sub_category = '빨대' or p_sub_category = '보온') 
+	and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '일반빨대물병보온'">
+	(p_sub_category = '일반' or p_sub_category = '물병' or p_sub_category = '빨대' or p_sub_category = '보온') 
+	and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '일반손잡이빨대물병보온'">
+	(p_sub_category = '일반' or p_sub_category = '손잡이' or p_sub_category = '물병' or p_sub_category = '빨대' or p_sub_category = '보온') 
+	and p_material = #{p_material}
+	</when>
+</choose>
+</sql>
+<select id="mGetSearchTotalCount" parameterType="com.tumbler.common.page.Criteria" resultType="int">
+<![CDATA[select count(*) from product where p_category = #{p_category} and 
+p_num > 0 and ]]>
+<include refid="productSearchOption2"/> and p_name like '%'||#{keyword}||'%'
+</select>
+<select id="mGetDetail" parameterType="int" resultType="manager_product">
+select p.p_num,p.i_num,p.p_name,p.p_material,p.p_category,
+p.p_sub_category,p.p_price,p.p_stock,p.p_temperature,p.p_sales_volume,p.p_capacity,p.p_country,p.p_color,p.p_grade,p.p_state,p.p_date,i.image1,i.image2,i.image3,i.image4,i.image5
+from product p, product_image i where p.i_num = i.i_num and p_num = #{p_num}
+</select>
+<update id="mUpdateProduct" parameterType="manager_product">
+update product set p_material = #{p_material}, p_category = #{p_category}, 
+p_sub_category = #{p_sub_category}, p_price = #{p_price},
+p_stock = #{p_stock}, p_temperature = #{p_temperature}, p_capacity = #{p_capacity},
+p_country = #{p_country}, p_color = #{p_color} ,p_state = #{p_state}
+where p_num = #{p_num}
+</update>
+<update id="mUpdateProduct_image" parameterType="manager_product">
+update product_image set image1 = #{image1}, image2 = #{image2}, image3 = #{image3}, image4 = #{image4}, image5 = #{image5} where i_num = #{i_num} 
+</update>
+<insert id="mRegistProduct" parameterType="manager_product">
+<selectKey keyProperty="i_num" resultType="int" order="BEFORE">
+         select product_image_seq.nextval from dual
+</selectKey>
+      insert all
+      into product_image (i_num,image1,image2,image3,image4,image5) values
+      (#{i_num},
+      #{image1,jdbcType=VARCHAR},
+      #{image2,jdbcType=VARCHAR},
+      #{image3,jdbcType=VARCHAR},
+      #{image4,jdbcType=VARCHAR},
+      #{image5,jdbcType=VARCHAR}
+      )
+      into product (P_NUM,
+      I_NUM,
+      P_NAME,
+      P_MATERIAL,
+      P_CATEGORY,
+      P_SUB_CATEGORY,
+      P_PRICE,
+      P_TEMPERATURE,   
+      P_STOCK,
+      P_CAPACITY,
+      P_COUNTRY,
+      P_COLOR
+      ) values (product_seq.nextval,
+      #{i_num},
+      #{p_name},
+      #{p_material},
+      #{p_category},
+      #{p_sub_category},
+      #{p_price},
+      #{p_temperature},
+      #{p_stock},
+      #{p_capacity},
+      #{p_country},
+      #{p_color}
+      )
+      select 1 from dual
+</insert>
+<delete id="mDeleteProduct" parameterType="manager_product">
+	delete from product where p_num = #{p_num}
+</delete>
+<delete id="mDeleteProduct_image" parameterType="manager_product">
+	delete from product_image where i_num = #{i_num}
+</delete>
+</mapper>

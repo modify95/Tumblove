@@ -1,0 +1,179 @@
+@charset "UTF-8";
+#product1_4x4:first-child {
+	margin-top: 20px;
+}
+#checkbox_div {
+	float: left;
+	width: 292px;
+	height: 30px;
+	padding-top: 2px;
+}
+#search_option_category {
+	float: right;
+	width: 120px;
+	height: 30px;
+	border-color: rgba(200,200,200,0.8);
+	border-radius: 3px;
+	position: relative;
+	right: 468px;
+}
+#search_option_material {
+	float: right;
+	width: 120px;
+	height: 30px;
+	border-color: rgba(200,200,200,0.8);
+	border-radius: 3px;
+	position: relative;
+	right: 224px;
+}	
+#search_button {
+	float: right;
+	height: 30px;
+	padding-top: 4.5px;
+	position: relative;
+	left: 456px;
+}
+#search_product_material_input {
+	float: right;
+	width: 240px;
+	height: 30px;
+	position: relative;
+	left: 140px;
+}
+#product_label_span {
+	margin-top: -2px;
+	margin-left: 60px;
+	margin-right: -5px;
+	font-size: 20px;
+	font-weight: bold;
+	height: 30px;
+	float: left;	
+}
+#manager_search_product {
+	position: relative;
+	right: 100px;
+	height: 30px;
+	float: right;
+	width: 880px;
+}
+#register_button {
+	height: 30px;
+	padding-top: 4.5px;
+	float: right;
+	position: relative;
+	top: -30px;
+	right: -60px;
+}
+#paging_nav {
+	width: 280px;
+	clear: both;
+	margin: 20px auto;
+	position: relative;
+	left: 20px;
+	text-align: center;
+}
+.filebox {
+   height: 45%;
+   width: 100%;
+}
+
+.imageView #fileLabel {
+   display: inline-block;
+   padding: .5em .75em;
+   text-align: center;
+   color: #fff;
+   font-size: inherit;
+   line-height: normal;
+   vertical-align: middle;
+   background-color: #337ab7;
+   cursor: pointer;
+   border: 1px solid #ebebeb;
+   border-bottom-color: #e2e2e2;
+   border-radius: .25em;
+   margin-left: 68px;
+   width: 50%;
+}
+
+#file { /* 파일 필드 숨기기 */
+   position: absolute;
+   width: 1px;
+   height: 1px;
+   padding: 0;
+   margin: -1px;
+   overflow: hidden;
+   clip: rect(0, 0, 0, 0);
+   border: 0;
+   
+}
+
+#file2, #file3, #file4, #file5{
+display: none;
+margin-top: 10px;
+}
+
+
+#cancle {
+   float: left;
+}
+
+#productInsertBtn {
+   float: left;
+}
+
+.modal-body2 {
+   width: 50%;
+   height: 700px;
+   float: left;
+}
+
+#file, #fileadd {
+	width: 100px;
+}
+
+.modal-size {
+   width: 100%;
+   height: 100%;
+}
+
+.imageView {
+   width: 100%;
+   height: 50%;
+   padding-right: 20px;
+   margin-bottom: 30px;
+}
+
+.form-control {
+   width: 280px;
+}
+.modal-footer button {
+	margin-left: 167px;
+	width: 100px;
+}
+.form-control input {
+   width: 280px;
+}
+
+#image_section {
+   width: 100%;
+   height: 100%;
+   overflow: hidden;
+}
+
+.img-thumbnail {
+   overflow: hidden;	
+   display: inline-block;
+   max-width: 100%;
+   height: auto;
+   padding: 4px;
+   line-height: 1.42857143;
+   background-color: #fff;
+   border: 1px solid #ddd;
+   border-radius: 4px;
+   -webkit-transition: all .2s ease-in-out;
+   -o-transition: all .2s ease-in-out;
+   transition: all .2s ease-in-out;
+}
+
+#image_section img {
+   height: 300px;
+}

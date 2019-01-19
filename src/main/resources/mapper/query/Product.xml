@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tumbler.product.dao.ProductDAO">
+<select id="productMainList" parameterType="product" resultType="product">
+select /*+ index_desc(product pk_product)*/ rownum rn, p.p_num,p.i_num,p.p_name,
+p.p_material,p.p_category,p.p_sub_category,p.p_price,p.p_stock,p.p_temperature,
+p.p_stock,p.p_sales_volume,p.p_capacity,p.p_country,p.p_color,p.p_grade,p.p_state,
+p.p_date,i.image1,i.image2,i.image3,i.image4,i.image5
+from product p, product_image i where p.i_num = i.i_num 
+	<choose>
+		<when test="order == null">
+		<![CDATA[and rownum <= 12 and p.p_num > 0 order by 2 desc]]>
+		</when>
+		<when test="order == 'p_sales_volume'">
+		<![CDATA[and p.p_num > 0 order by p_sales_volume desc]]>
+		</when>
+		<when test="order == 'p_grade'">
+		<![CDATA[and p.p_num > 0 order by p_grade desc]]>
+		</when>
+		<when test="order == 'p_date'">
+		<![CDATA[and p.p_num > 0 order by p_date desc]]>
+		</when>
+	</choose>
+</select>
+<select id="productMainPopularList" parameterType="product" resultType="product">
+<![CDATA[select p.p_num,p.i_num,p.p_name,p.p_material,p.p_category,p.p_sub_category,
+p.p_price,p.p_stock,p.p_temperature, p.p_stock,p.p_sales_volume,p.p_capacity
+,p.p_country,p.p_color,p.p_grade,p.p_state,p.p_date,i.image1,i.image2,i.image3,i.image4,i.image5
+from product p, product_image i where p.i_num = i.i_num and p.p_num > 0  order by p.p_sales_volume desc]]>
+</select>
+<select id="productMainNew" parameterType="product" resultType="product">
+<![CDATA[select /*+ index_desc(product pk_product)*/ rownum rn, p.p_num,p.i_num,p.p_name,p.p_material,
+p.p_category,p.p_sub_category,p.p_price,p.p_stock,p.p_temperature,p.p_stock,p.p_sales_volume,p.p_capacity,
+p.p_country,p.p_color,p.p_grade,p.p_state,p.p_date,i.image1,i.image2,i.image3,i.image4,i.image5
+from product p, product_image i where p.i_num = i.i_num and p.p_num > 0 order by p_date desc]]>
+</select>
+<select id="productBrandListWithPaging" parameterType="com.tumbler.common.page.Criteria" resultType="product">
+<![CDATA[select p.p_num,p.i_num,p.p_name,p.p_material,p.p_category,p.p_sub_category,p.p_price,p.p_stock,
+p.p_temperature,p.p_stock,p.p_sales_volume,p.p_capacity,p.p_country,p.p_color,p.p_grade,p.p_state,p.p_date,
+i.image1,i.image2,i.image3,i.image4,i.image5 
+from(select rownum rn, p.p_num from product p, (select rownum rn, p_num from product 
+where p_category = #{p_category} and p_num > 0 order by 2 desc) condition where condition.p_num = p.p_num and rownum <= #{pageNum} * #{amount} 
+order by 2 desc) x, product p,product_image i where x.p_num = p.p_num and p.i_num = i.i_num and rn > (#{pageNum} - 1) * #{amount} order by 1 desc]]>
+</select>
+<select id="getTotalCount" parameterType="com.tumbler.common.page.Criteria" resultType="int">
+<![CDATA[select count(*) from product where p_category = #{p_category} and p_num > 0]]>
+</select>
+<select id="productBrandListSearchWithPaging" parameterType="com.tumbler.common.page.Criteria" resultType="product">
+<![CDATA[select p.p_num,p.i_num,p.p_name,p.p_material,p.p_category,p.p_sub_category,p.p_price,p.p_stock,
+p.p_temperature,p.p_stock,p.p_sales_volume,p.p_capacity,p.p_country,p.p_color,p.p_grade,p.p_state,p.p_date,
+i.image1,i.image2,i.image3,i.image4,i.image5 
+from(select rownum rn, p.p_num from product p, (select rownum rn, p_num from product where p_category = #{p_category} 
+and p_num > 0 and]]><include refid="productSearchOption"/>and p_name like '%'||#{keyword}||'%' order by 2 desc) searched_list
+<![CDATA[where searched_list.p_num = p.p_num and rownum <= #{pageNum} * #{amount} order by 2 desc) x, 
+product p, product_image i where x.p_num = p.p_num and p.i_num = i.i_num and rn > (#{pageNum} - 1) * #{amount} order by 1 desc]]> 
+</select>
+<sql id="productSearchOption">
+<choose>
+	<when test="p_sub_category == '일반'">
+	p_sub_category = '일반' and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '손잡이'">
+	p_sub_category = '손잡이' and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '빨대'">
+	p_sub_category = '빨대' and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '물병'">
+	p_sub_category = '물병' and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '보온'">
+	p_sub_category = '보온' and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '일반손잡이'">
+	(p_sub_category = '일반' or p_sub_category = '물병') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '일반빨대'">
+	(p_sub_category = '일반' or p_sub_category = '빨대') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '일반물병'">
+	(p_sub_category = '일반' or p_sub_category = '물병') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '일반보온'">
+	(p_sub_category = '일반' or p_sub_category = '보온') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '손잡이빨대'">
+	(p_sub_category = '손잡이' or p_sub_category = '빨대') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '손잡이물병'">
+	(p_sub_category = '손잡이' or p_sub_category = '물병') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '손잡이보온'">
+	(p_sub_category = '손잡이' or p_sub_category = '보온') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '빨대물병'">
+	(p_sub_category = '빨때' or p_sub_category = '물병') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '빨대보온'">
+	(p_sub_category = '빨대' or p_sub_category = '보온') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '물병보온'">
+	(p_sub_category = '물병' or p_sub_category = '보온') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '일반손잡이빨대'">
+	(p_sub_category = '물병' or p_sub_category = '손잡이' or p_sub_category = '빨대') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '일반손잡이물병'">
+	(p_sub_category = '물병' or p_sub_category = '손잡이' or p_sub_category = '물병') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '일반손잡이보온'">
+	(p_sub_category = '물병' or p_sub_category = '손잡이' or p_sub_category = '보온') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '손잡이빨대물병'">
+	(p_sub_category = '손잡이' or p_sub_category = '빨대' or p_sub_category = '물병') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '손잡이빨대보온'">
+	(p_sub_category = '손잡이' or p_sub_category = '빨대' or p_sub_category = '보온') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '빨대물병보온'">
+	(p_sub_category = '빨대' or p_sub_category = '물병' or p_sub_category = '보온') and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '일반손잡이빨대물병'">
+	(p_sub_category = '일반' or p_sub_category = '손잡이' or p_sub_category = '빨대' or p_sub_category = '물병') 
+	and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '일반손잡이빨대보온'">
+	(p_sub_category = '일반' or p_sub_category = '손잡이' or p_sub_category = '빨대' or p_sub_category = '보온') 
+	and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '손잡이빨대물병보온'">
+	(p_sub_category = '물병' or p_sub_category = '손잡이' or p_sub_category = '빨대' or p_sub_category = '보온') 
+	and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '일반빨대물병보온'">
+	(p_sub_category = '일반' or p_sub_category = '물병' or p_sub_category = '빨대' or p_sub_category = '보온') 
+	and p_material = #{p_material}
+	</when>
+	<when test="p_sub_category == '일반손잡이빨대물병보온'">
+	(p_sub_category = '일반' or p_sub_category = '손잡이' or p_sub_category = '물병' or p_sub_category = '빨대' or p_sub_category = '보온') 
+	and p_material = #{p_material}
+	</when>
+</choose>
+</sql>
+<select id="getSearchTotalCount" parameterType="com.tumbler.common.page.Criteria" resultType="int">
+<![CDATA[select count(*) from product where p_category = #{p_category} and 
+p_num > 0 and ]]>
+<include refid="productSearchOption"/> and p_name like '%'||#{keyword}||'%'
+</select>
+<!-- 상세정보 구현 -->
+<select id="productDetail" parameterType="com.tumbler.product.vo.ProductVO" resultType="product">
+	SELECT *
+	from product p , product_image i
+	where p_num = #{p_num} and i.i_num = p.i_num
+</select>
+</mapper>

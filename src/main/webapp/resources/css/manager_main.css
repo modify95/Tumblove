@@ -1,0 +1,65 @@
+@charset "UTF-8";
+#manager_nav {
+	padding-left: 25.5%;
+}
+#manager_nav_ul li a {
+	color: white;
+}
+#manager_nav_ul li a:hover {
+	color: orange;
+}
+#manager_login {
+	margin: 10px auto;
+	border: none;
+	width: 1000px;
+	height: 300px;
+	text-align: center;
+	padding-top: 110px;
+	background: rgba(0,0,0,0.4);
+	color: white;
+	font-weight: bolder;
+	border-radius: 5px;
+}
+#manager_logined {
+	margin: 10px auto;
+	border: none;
+	width: 1000px;
+	height: 300px;
+	text-align: center;
+	padding-top: 110px;
+	background: rgba(0,0,0,0.4);
+	color: white;
+	font-weight: bolder;
+	border-radius: 5px;
+}
+#manager_login_button, #LogoutBtn {
+	background: linear-gradient(to bottom, rgba(100,100,180,1) 0%, rgba(20,20,50,0.7) 100%);
+	width: 150px;
+	height: 30px;
+	border-radius: 2px;
+	border: 1px solid rgba(20,20,50,0.8);
+}
+#manager_login_modal {
+	padding-top: 205px;
+}
+#manager_login_form {
+	margin: 0 auto;
+	width: 380px;
+}
+#manager_login_label{
+	width: 300px;
+	margin: 0 42.1%;
+	font-size: 18px;
+	font-weight: bolder;
+	color: white;
+}
+#modal-footer {
+	margin-top: 20px;
+	text-align: center;
+}
+#manager_id, #manager_password {
+	text-align: center;
+}
+h5 {
+	color : gray;
+}

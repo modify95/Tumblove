@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tumblove.review.dao.ReviewDAO">
+
+	<select id="reviewListWithPaging"
+		parameterType="com.tumbler.review.page.Criteria"
+		resultType="com.tumbler.review.vo.ReviewVO">
+	<![CDATA[
+		select r.r_num,r.r_title,r.r_content,r.r_writer,r.r_image,r.r_score,r.r_count,to_char(r.r_date,'YYYY-MM-DD') r_date
+		from (select rownum rn, r.r_num from review r, (select rownum rn, r_num from review where not t_num = -1 order by 2 desc) condition
+		where condition.r_num = r.r_num and rownum <= #{pageNum} * #{amount} order by 1 desc) x, review r
+		where x.r_num = r.r_num and rn > (#{pageNum}-1) * #{amount} order by 1 desc
+	]]>
+	</select>
+
+
+	<select id="score_five" resultType="int">
+		select count(r_score) from
+		review where r_score = 5
+	</select>
+	<select id="score_four" resultType="int">
+		select count(r_score) from
+		review where r_score = 4
+	</select>
+	<select id="score_three" resultType="int">
+		select count(r_score) from
+		review where r_score = 3
+	</select>
+	<select id="score_two" resultType="int">
+		select count(r_score) from
+		review where r_score = 2
+	</select>
+	<select id="score_one" resultType="int">
+		select count(r_score) from
+		review where r_score = 1
+	</select>
+	<select id="score_avg" resultType="double">
+		select
+		nvl(round(avg(r_score),1),0) from review
+	</select>
+
+	<insert id="reviewInsert"
+		parameterType="com.tumbler.review.vo.ReviewVO">
+		<selectKey keyProperty="r_num" resultType="int"
+			order="BEFORE">
+			select review_seq.nextval from dual
+		</selectKey>
+
+		insert into review (
+		r_num,r_title,r_content,r_writer,r_score
+		<if test="r_image != null and r_image != ''">
+			,r_image
+		</if>
+		<if test="p_num != null and p_num != ''">
+			,p_num
+		</if>
+		<if test="m_num != null and m_num != ''">
+			,m_num
+		</if>
+		<if test="t_num != null and t_num != ''">
+			,t_num
+		</if>
+		)
+		values (
+		#{r_num},#{r_title},#{r_content},#{r_writer},#{r_score}
+
+		<if test="r_image != null and r_image != ''">
+			,#{r_image}
+		</if>
+		<if test="p_num != null and p_num != ''">
+			,#{p_num}
+		</if>
+		<if test="m_num != null and m_num != ''">
+			,#{m_num}
+		</if>
+		<if test="t_num != null and t_num != ''">
+			,#{t_num}
+		</if>
+		)
+	</insert>
+	<select id="reviewInsertProgress" parameterType="com.tumbler.review.vo.ReviewVO" resultType="com.tumbler.review.vo.ReviewVO">
+	select r_num from review where m_num = #{m_num} order by 1 desc
+	</select>
+	
+	<update id="reviewImageInsert" parameterType="com.tumbler.review.vo.ReviewVO">
+		update review set r_image = #{r_image} where r_num = #{r_num}
+	</update>
+
+	<update id="reviewUpdate"
+		parameterType="com.tumbler.review.vo.ReviewVO">
+		update review set
+		r_title = #{r_title}, r_content = #{r_content},
+		r_score = #{r_score}
+		<if test="r_image != null and r_image != ''">
+			,r_image = #{r_image}
+		</if>
+		where r_num = #{r_num}
+	</update>
+
+	<delete id="reviewDelete"
+		parameterType="com.tumbler.review.vo.ReviewVO">
+		delete from review
+		where r_num = #{r_num}
+	</delete>
+
+	<select id="reviewIdCount"
+		parameterType="com.tumbler.review.vo.ReviewVO" resultType="int">
+		select nvl(count(r_writer),0) from review where r_writer = #{r_writer} and
+		p_num = #{p_num}
+	</select>
+	
+	<select id="readTradingNumber" parameterType="com.tumbler.review.vo.ReviewVO" resultType="com.tumbler.review.vo.ReviewVO">
+	select t.t_num from trading t, order_trading o where t.t_num = o.t_num and t.m_num = #{m_num} and o.p_num = #{p_num} order by 1 desc
+	</select>
+	
+	<select id="cCountReview" parameterType="int" resultType="int">
+	select count(*) from review where r_num > 0 and p_num = #{p_num}
+	</select>
+
+</mapper>

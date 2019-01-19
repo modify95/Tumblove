@@ -1,0 +1,359 @@
+@charset "UTF-8";
+#review_container { /* 전체 CSS */
+	margin: 10px auto;
+	padding: 0;
+	width: 850px;
+	height: auto;
+}
+/*****************************리뷰 점수 리스트,평균 CSS***************************************/
+#score_container { /* 리뷰 점수 평점 틀 설정 */
+	margin-bottom: 10px;
+	padding: 10px;
+	width: auto;
+	height: 165px;
+	border-top: 1px solid gray;
+	border-bottom: 1px solid gray;
+	text-align: center;
+	margin-top: 15px;
+}
+
+#stage_score { /* 리뷰 점수 리스트 ul 설정 CSS */
+	list-style-type: none;
+	margin-top: 5px;
+	margin-left: 10px;
+}
+
+#score_avg { /* 리뷰 평균 점수 설정 CSS */
+	background-color: silver;
+	color: white;
+	float: left;
+	width: 120px;
+	height: 125px;
+	font-size: 42px;
+	text-align: center;
+	line-height: 120px;
+	margin-top: 10px;
+	margin-left: 20px;
+	position: relative;
+	border-radius: 5px;
+	font-family: serif;
+	font-weight: bold;
+}
+
+.score_li { /* 평점관련 li 설정 */
+	display: inline-block;
+	margin-bottom: 9px;
+	height: 14px;
+	width: auto;
+}
+
+.score_text { /* 평점 텍스트 설정 */
+	float: left;
+	width: 50px;
+}
+
+.score_gauge { /* 평점 게이지 설정 */
+	background-color: #f4f4f4;
+	width: 450px;
+	height: 13px;
+	position: relative;
+	left: 10px;
+	top: 5px;
+	margin-left: 54px;
+	margin-right: 70px;
+}
+
+#score_gauge_five { /*  리뷰 게이지 5점  */
+	height: 13px;
+	/* background-color: #ff4c23; */
+	background-color: rgba(50,100,180,0.7);
+}
+
+#score_gauge_four { /*  리뷰 게이지 4점  */
+	height: 13px;
+	/* background-color: #ff4c23; */
+	background-color: rgba(50,100,180,0.7);
+}
+
+#score_gauge_three { /*  리뷰 게이지 3점  */
+	height: 13px;
+	/* background-color: #ff4c23; */
+	background-color: rgba(50,100,180,0.7);
+}
+
+#score_gauge_two { /*  리뷰 게이지 2점  */
+	height: 13px;
+	/* background-color: #ff4c23; */
+	background-color: rgba(50,100,180,0.7);
+}
+
+#score_gauge_one { /*  리뷰 게이지 1점  */
+	height: 13px;
+	/* background-color: #ff4c23; */
+	background-color: rgba(50,100,180,0.7);
+}
+
+.score_level { /* 평균 인원수 설정*/
+	float: right;
+	text-align: right;
+	color: #9d9d9d;
+	width: 42px;
+}
+
+#score_list_box { /* ul 들어있는 큰 박스(div) 설정*/
+	margin-left: 10px;
+	padding-left: 100px;
+	width: 700px;
+	height: 120px;
+}
+/*****************************************리뷰 리스트 CSS*********************************************/
+#reviewlist { /* 리뷰 리스트 (ul)설정 CSS*/
+	list-style-type: none;
+	width: 800px;
+	height: 10px;
+}
+
+#review_score { /* 리뷰 평점 li */
+	float: left;	
+}
+
+#review_title { /* 리뷰 제목  li */
+	float: left;
+	padding-left: 15px;
+	width: 500px;
+	font-weight: bold;
+	font-size: 15px;
+	color: black;
+	margin-bottom: 10px;
+}
+
+#review_date { /* 리뷰 작성 날짜 li */
+	float: right;
+	position: relative;
+	left: 30px;
+	font-size: 14px;
+	color: black;
+}
+
+#review_writer { /* 리뷰 글쓴이 li */
+	float: right;
+	margin-right: 10px;
+	position: relative;
+	left: 20px;
+	font-weight: bold;
+	font-size: 14px;
+	color: black;
+}
+
+#review_list_img { /* 리뷰 이지미 div */
+	width: 80px;
+	height: 80px;
+	float: right;
+}
+
+#review_content { /* 리뷰 내용  div */
+	width: 500px;
+	height: 80px;
+	margin-bottom: 20px;
+	position: relative;
+	left: 14px;
+	top: 10px;
+}
+/* #review_update{
+	border-radius: 5px;
+	margin-left: 5px;
+	box-shadow: none;
+	font-size: 14px;
+	background-color: lightgray;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+#review_delete{
+	border-radius: 5px;
+	box-shadow: none;
+	font-size: 14px;
+	background-color: lightgray;
+	padding-left: 15px;
+	padding-right: 15px;
+} */
+
+/***********************************************등록 CSS*************************************************/
+#insert_text_button { /* 텍스트 박스와 버튼 포홈 DIV */
+	width: 800px;
+	margin-left: 25px;
+}
+#insert_text_button select{
+-webkit-appearance: none; /* 네이티브 외형 감추기 */
+-moz-appearance:none;
+apperance:none;
+background: url('/resources/image/review/selectDirection.jpg') no-repeat 100% 50%; /* 화살표 이미지 넣기 */
+width: 100px;
+float: left;
+}
+#r_score { /* 별점 선택 콤보박스 */
+	color: orange;
+	margin-top: 5px;
+	font-size: 13px;
+	height: 30px;
+	margin-bottom: 5px;
+}
+
+#score_text { /* 평점 텍스트 */
+	float: left;
+	padding-right: 10px;
+	font-size: 18px;
+	margin-top: 2px;
+}
+
+#insert_button { /* 등록 버튼 */
+	float: right;
+	/* border-radius: 5px;
+	margin-left: 5px;
+	box-shadow: none;
+	margin-top: 3px;
+	font-size: 14px;
+	background-color: lightgray;
+	padding-left: 28px;
+	padding-right: 28px; */
+	margin-top: 5px;
+	height: 30px;
+	width: 100px;
+	padding-top: 4.5px;
+	margin-bottom: 5px;
+}
+
+#r_title { /* 제목 TEXT */
+	margin-bottom: 5px;
+	width: 800px;
+	
+}
+#insert_file_div{ /* file div CSS*/
+float: left;
+margin-left: 10px;
+
+}
+#insert_file_div input[type='file'] { /* 파일 필드 숨기기 */
+  display: none;
+}
+#insert_file_div label{ /* file lable CSS */
+display: inline-block;
+color: black;
+background-color: lightgray;
+margin-top: 3px;
+font-size: 13px;
+border-radius: 5px;
+padding: 4px;
+padding-left: 50px;
+padding-right: 50px;
+}
+/************************************수정 CSS *****************************************/
+
+#file{
+display: none;
+}
+#file_label{
+/* display: inline-block; */
+color: black;
+background-color: lightgray;
+margin-left:5px;
+font-size: 13px;
+border-radius: 5px;
+padding-top: 4px;
+padding-bottom:4px;
+padding-left: 50px;
+padding-right: 50px;
+
+}
+#update_score { /* 수정 평점 CSS */
+	float: left;	
+	color: orange;
+	margin-top: 4px;
+	font-size: 13px;
+	-webkit-appearance: none; /* 네이티브 외형 감추기 */
+	-moz-appearance:none;
+	apperance:none;
+	background: url('/resources/image/review/selectDirection.jpg') no-repeat 100% 50%; /* 화살표 이미지 넣기 */
+	width: 100px;
+	height: 30px;
+}
+
+#update_score_text { /* 수정 평점 TEXT CSS */
+	float: left;
+	font-size: 12px;
+}
+
+#update_title { /* 수정 제목 CSS */
+	margin-bottom: 5px;
+	width: 839px;
+}
+#update_content{
+width: 838px;
+}
+
+#update_button, #update_cancel{ /* 수정 버튼 CSS */
+	float: right;
+	margin-top: 5px;
+	width: 80px;
+}
+#update_cancel {
+	position: relative;
+	right: 5px;
+}
+
+#update_button, #update_cancel, #review_update, #review_delete{
+	height: 30px;
+	padding-top: 4.5px;
+	font-weight: bold;
+}
+/****************************페이징 CSS*********************************************/
+.pagination{ /* 페이징 ul 설정 */
+list-style-type: none;
+text-align: center;
+}
+.paginate_button{ /* 페이징 li 가로로 정렬 */
+display: inline-block;
+}
+.paging_num{
+text-decoration: none;
+color: black;
+}
+#insert_container {
+margin-bottom: 10px;
+}
+#review_buttons {
+width: 100%;
+text-align: right;
+margin-bottom: 10px;
+}
+#review_buttons button{
+width: 84px;
+}
+#r_list {
+	border-top: 1px solid silver;
+	border-bottom: 1px solid silver;
+	padding-top: 8px; padding-left: 8px; padding-right: 8px;
+	height: 160px;
+	margin-bottom: 10px;
+}
+.review_list_starImage img {
+	margin: 40px 12px;
+}
+#review_container h1 {
+	font-size: 40px;
+	font-family: serif;
+	font-weight: bold;
+	margin-bottom: 15px;
+	color: gray;
+	margin-left: -30px;		
+}
+#review_null_area {
+	width: 800px; height: 380px;
+	background-color: rgba(0,0,0,0.3);
+	color: white;
+	margin: 0 auto;
+	margin-top: 50px;
+	border-radius: 5px;
+	text-align: center;
+	font-size: 16px;
+	padding-top: 170px;
+}

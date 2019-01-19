@@ -1,0 +1,46 @@
+@charset "UTF-8";
+#search_option_material {
+	float: left;
+	height: 30px;
+	border-color: rgba(200,200,200,0.8);
+	border-radius: 3px;
+}	
+#product_list_order {
+	vertical-align: bottom;
+	height: 30px;
+	float: left;
+	width: 68.5%;
+}
+#search_product {
+	width: 31.5%;
+	float: left;
+	padding-right: 0px;
+	position: relative;
+	top: -28px;
+	height: 30px;
+}
+#search_product .form-control {
+	float: left;
+	width: 180px;
+	height: 30px;
+}
+#search_button {
+	float: left;
+	height: 30px;
+	padding-top: 4.5px;
+}
+#paging_nav {
+	width: 280px;
+	clear: both;
+	margin: 20px auto;
+	position: relative;
+	left: 20px;
+	text-align: center;
+}
+#checkbox_div {
+	float: left;
+}
+#product_list_order span {
+	position: relative;
+	top: -12px;
+}
